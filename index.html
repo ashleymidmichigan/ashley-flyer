@@ -17,6 +17,7 @@
     "image" = picture on the card, "large" = bigger version when tapped
     (leave "large" out to reuse "image").
   • "category" must match one of the names in "categories".
+  • Several sizes? Use "prices": [ {"label":"Queen","price":"$749"}, ... ] instead of "price".
   • No price? Leave "price" out and add "badge": "your text" instead.
   • Sale dates: type them into "dates" (e.g. "Oct 1 – Oct 31"); leave "" to hide.
   • Leave a store "phone" as "" to hide its call link.
@@ -49,7 +50,8 @@
     { "name": "Round Dining Table",                  "price": "$899",  "category": "Dining",           "image": "img/16.jpg", "large": "img/16-lg.jpg" },
     { "name": "Tempur-Pedic ProBreeze", "badge": "FREE 50\" Smart TV with purchase", "category": "Mattresses", "image": "img/17.jpg", "large": "img/17-lg.jpg" },
     { "name": "Tempur-Pedic LuxBreeze", "badge": "FREE 50\" Smart TV with purchase", "category": "Mattresses", "image": "img/18.jpg", "large": "img/18-lg.jpg" },
-    { "name": "Premium Mattress Financing", "badge": "$0 down, up to 60 months 0% interest on premium mattresses", "category": "Mattresses", "image": "img/19.jpg", "large": "img/19-lg.jpg" }
+    { "name": "Premium Mattress Financing", "badge": "$0 down, up to 60 months 0% interest on premium mattresses", "category": "Mattresses", "image": "img/19.jpg", "large": "img/19-lg.jpg" },
+    { "name": "Nectar Classic Hybrid Mattress", "prices": [ { "label": "Queen", "price": "$749" }, { "label": "King", "price": "$849" } ], "category": "Mattresses", "image": "img/20.jpg", "large": "img/20-lg.jpg" }
   ],
   "storesHeading": "Shop any Ashley Mid-Michigan location",
   "stores": [
@@ -97,6 +99,9 @@
   .card .nm{font-weight:700;font-size:14px;line-height:1.25;min-height:2.5em}
   .card .pr{font-weight:900;font-size:28px;line-height:1.1;letter-spacing:-.02em;margin-top:2px}
   .card .pr small{display:inline-block;margin-left:6px;font-size:10px;font-weight:800;letter-spacing:.14em;color:#fff;background:var(--orange);padding:3px 6px;border-radius:4px;vertical-align:middle;transform:translateY(-3px)}
+  .card .pp{display:flex;gap:14px;margin-top:2px}
+  .card .pp span{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--rust)}
+  .card .pp b{display:block;font-weight:900;font-size:26px;line-height:1.1;letter-spacing:-.02em}
   .card .bd{display:inline-block;margin-top:6px;background:var(--orange);color:#fff;font-weight:900;font-size:14px;line-height:1.2;padding:8px 10px;border-radius:8px;text-transform:uppercase}
   .card .tap{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600}
   .note{text-align:center;color:var(--muted);font-size:13px;font-weight:600;margin:18px 12px 4px}
@@ -164,8 +169,8 @@
   function render(){
     shown = d.offers.filter(function(o){return cur==='All'||o.category===cur});
     grid.innerHTML = shown.map(function(o,i){
-      return '<button class="card" data-i="'+i+'"><div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(o.name)+' '+esc(o.price||o.badge||'')+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
-             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+'<div class="tap">'+(o.price?'Tap to enlarge':'See store for details*')+'</div></div></button>';
+      return '<button class="card" data-i="'+i+'"><div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(o.name)+' '+esc(o.price||(o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'')||o.badge||'')+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
+             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div></button>';
     }).join('');
   }
   render();
@@ -179,7 +184,7 @@
   });
 
   var lb=document.getElementById('lb'), lbi=document.getElementById('lbi'), lbc=document.getElementById('lbc'), idx=0;
-  function show(i){ idx=(i+shown.length)%shown.length; var o=shown[idx]; lbi.src=o.large||o.image; lbi.alt=o.name; lbc.textContent=o.name+' — '+(o.price||o.badge||''); }
+  function show(i){ idx=(i+shown.length)%shown.length; var o=shown[idx]; lbi.src=o.large||o.image; lbi.alt=o.name; lbc.textContent=o.name+' — '+(o.price||(o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'')||o.badge||''); }
   function open(i){ show(i); lb.classList.add('on'); document.body.style.overflow='hidden'; }
   function close(){ lb.classList.remove('on'); document.body.style.overflow=''; lbi.removeAttribute('src'); }
   grid.addEventListener('click',function(e){ var c=e.target.closest('.card'); if(c) open(+c.getAttribute('data-i')); });
