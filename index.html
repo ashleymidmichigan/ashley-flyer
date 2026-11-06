@@ -34,6 +34,7 @@
   "dates": "",
   "financing": "Up to 60 months 0% interest financing | see store for details*",
   "categories": [
+    "Door Busters",
     "Bedroom",
     "Sectionals",
     "Sofas & Recliners",
@@ -257,6 +258,54 @@
       "category": "Bedding",
       "image": "img/22.jpg",
       "large": "img/22-lg.jpg"
+    },
+    {
+      "name": "Power Reclining Sofa & Loveseat",
+      "price": "$1699",
+      "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
+      "category": "Door Busters",
+      "image": "img/db-01.jpg",
+      "large": "img/db-01-lg.jpg"
+    },
+    {
+      "name": "Recliners (3 Colors Available)",
+      "price": "$299",
+      "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
+      "category": "Door Busters",
+      "image": "img/db-02.jpg",
+      "large": "img/db-02-lg.jpg"
+    },
+    {
+      "name": "Loveseat",
+      "price": "$199",
+      "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
+      "category": "Door Busters",
+      "image": "img/db-03.jpg",
+      "large": "img/db-03-lg.jpg"
+    },
+    {
+      "name": "Reclining Sofa & Loveseat",
+      "price": "$1649",
+      "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
+      "category": "Door Busters",
+      "image": "img/db-04.jpg",
+      "large": "img/db-04-lg.jpg"
+    },
+    {
+      "name": "Recliner",
+      "price": "$449",
+      "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
+      "category": "Door Busters",
+      "image": "img/db-05.jpg",
+      "large": "img/db-05-lg.jpg"
+    },
+    {
+      "name": "5PC Sleeper Sectional",
+      "price": "$1999",
+      "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
+      "category": "Door Busters",
+      "image": "img/db-06.jpg",
+      "large": "img/db-06-lg.jpg"
     }
   ],
   "storesHeading": "Shop any Ashley Mid-Michigan location",
@@ -308,7 +357,7 @@
 </script>
 
 <style>
-  :root{--ink:#161616;--muted:#4e4e4e;--paper:#f3f3f4;--sand:#e8e8ea;--gold:#e2b340;--gold-ink:#7a5c12;--charcoal:#141414;
+  :root{--ink:#161616;--muted:#4e4e4e;--paper:#f3f3f4;--sand:#e8e8ea;--gold:#e2b340;--gold-ink:#7a5c12;--red:#c41230;--charcoal:#141414;
         --shadow:0 1px 2px rgba(0,0,0,.05),0 8px 22px rgba(0,0,0,.06)}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -332,6 +381,8 @@
   .tabs::-webkit-scrollbar{display:none}
   .tab{flex:none;scroll-snap-align:start;border:2px solid #4a4a4a;background:#fff;color:var(--ink);font:inherit;font-weight:700;font-size:15px;padding:8px 16px;border-radius:999px;cursor:pointer;min-height:44px}
   .tab[aria-pressed="true"]{background:var(--gold);color:var(--charcoal);border-color:var(--gold)}
+  .tab-door{border-color:var(--red);color:var(--red)}
+  .tab.tab-door[aria-pressed="true"]{background:var(--red);color:#fff;border-color:var(--red)}
 
   main{padding:16px 12px 8px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -348,6 +399,8 @@
   .card .pp b{display:block;font-weight:900;font-size:26px;line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
   .card .bd{display:inline-block;margin-top:6px;background:var(--gold);color:var(--charcoal);font-weight:900;font-size:14px;line-height:1.25;padding:8px 10px;border-radius:8px;text-transform:uppercase}
   .card .tm{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35;font-weight:600}
+  .card.door{border:2px solid var(--red)}
+  .card.door .pr small{background:var(--red);color:#fff}
   .card .tap{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600}
   .note{text-align:center;color:var(--muted);font-size:13px;font-weight:600;margin:18px 12px 4px}
 
@@ -402,7 +455,7 @@
     (d.dates?'<div class="dates">'+esc(d.dates)+'</div>':'') + '</header>';
   h += '<div class="fin">'+esc(d.financing)+'</div>';
   h += '<nav><div class="tabs" id="tabs">' + cats.map(function(c){
-        return '<button class="tab" data-c="'+esc(c)+'" aria-pressed="'+(c==='All')+'">'+esc(c)+'</button>';}).join('') + '</div></nav>';
+        return '<button class="tab'+(c==='Door Busters'?' tab-door':'')+'" data-c="'+esc(c)+'" aria-pressed="'+(c==='All')+'">'+esc(c)+'</button>';}).join('') + '</div></nav>';
   h += '<div class="wrap"><main><div class="grid" id="grid"></div><p class="note">'+esc(d.footnote)+'</p></main></div>';
   h += '<footer><div class="wrap"><div class="ft">'+esc(d.storesHeading)+'</div><div class="strip">' + d.stores.map(function(s){
         var a = s.street+', '+s.city+', '+s.state+(s.zip?' '+s.zip:'');
@@ -419,7 +472,7 @@
     grid.innerHTML = shown.map(function(o,i){
       var money = o.price || (o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'') || o.badge || '';
       var alt = [o.name, o.desc, money, o.terms].filter(Boolean).join('. ');
-      return '<button class="card" data-i="'+i+'"><div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
+      return '<button class="card'+(o.category==='Door Busters'?' door':'')+'" data-i="'+i+'"><div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
              '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(o.desc?'<div class="ds">'+esc(o.desc)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+(o.terms?'<div class="tm">'+esc(o.terms)+'</div>':'')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div></button>';
     }).join('');
   }
