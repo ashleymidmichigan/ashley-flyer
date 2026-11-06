@@ -13,13 +13,13 @@
 <!-- =====================================================================
   EDIT HERE — all the content of the page comes from this one block.
   • To change a promotion: edit its name / price / category / image.
-  • Optional "desc": short line under the name (e.g. collection / set name).
+  • "name" is the card title. For a verified series, put the series in "name" and the product descriptor in "desc".
   • To add one: copy a line, put the new picture in the img/ folder.
     "image" = picture on the card, "large" = bigger version when tapped
     (leave "large" out to reuse "image").
   • "category" must match one of the names in "categories".
   • Optional "terms": the financing line printed on that flyer. Keep each flyer's own percent. Do not copy a furniture percent onto Mattresses or Bedding.
-  • Leave "desc" off unless a collection name is printed on the flyer.
+  • Leave "desc" off when it would repeat "name". Do not add an unverified series.
   • Several sizes? Use "prices": [ {"label":"Queen","price":"$749"}, ... ] instead of "price".
   • No price? Leave "price" out and add "badge": "your text" instead.
   • Sale dates: type them into "dates" (e.g. "Oct 1 – Oct 31"); leave "" to hide.
@@ -60,7 +60,8 @@
       "large": "img/bf-02-lg.jpg"
     },
     {
-      "name": "Queen Upholstered Fireplace Bed with Audio",
+      "name": "Tayleena",
+      "desc": "Queen Upholstered Fireplace Bed with Audio",
       "price": "$1299",
       "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
       "category": "Bedroom",
@@ -132,7 +133,8 @@
       "large": "img/bf-11-lg.jpg"
     },
     {
-      "name": "6PC Leather Power Sectional with Heat & Massage",
+      "name": "5Z-Harrenhurst",
+      "desc": "6PC Leather Power Sectional with Heat & Massage",
       "price": "$6199",
       "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
       "category": "Sectionals",
@@ -140,7 +142,8 @@
       "large": "img/bf-12-lg.jpg"
     },
     {
-      "name": "6PC Power Sectional with Audio Console",
+      "name": "ModZ",
+      "desc": "6PC Power Sectional with Audio Console",
       "price": "$3499",
       "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
       "category": "Sectionals",
@@ -172,7 +175,8 @@
       "large": "img/bf-16-lg.jpg"
     },
     {
-      "name": "Round Dining Table",
+      "name": "Jorlaina",
+      "desc": "Round Dining Table",
       "price": "$899",
       "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
       "category": "Dining",
@@ -180,7 +184,8 @@
       "large": "img/bf-17-lg.jpg"
     },
     {
-      "name": "Dining Table",
+      "name": "Calmoro",
+      "desc": "Dining Table",
       "price": "$299",
       "terms": "SAVE UP TO 20% OFF CASH OR CARD (12 MONTH FINANCING), OR GET $0 DOWN 60 MONTHS 0% INTEREST FINANCING. SEE STORE FOR DETAILS*",
       "category": "Dining",
@@ -471,9 +476,10 @@
     shown = d.offers.filter(function(o){return cur==='All'||o.category===cur});
     grid.innerHTML = shown.map(function(o,i){
       var money = o.price || (o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'') || o.badge || '';
-      var alt = [o.name, o.desc, money, o.terms].filter(Boolean).join('. ');
+      var sub = (o.desc && o.desc !== o.name) ? o.desc : '';
+      var alt = [o.name, sub, money, o.terms].filter(Boolean).join('. ');
       return '<button class="card'+(o.category==='Door Busters'?' door':'')+'" data-i="'+i+'"><div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
-             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(o.desc?'<div class="ds">'+esc(o.desc)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+(o.terms?'<div class="tm">'+esc(o.terms)+'</div>':'')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div></button>';
+             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+(o.terms?'<div class="tm">'+esc(o.terms)+'</div>':'')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div></button>';
     }).join('');
   }
   render();
@@ -487,7 +493,7 @@
   });
 
   var lb=document.getElementById('lb'), lbi=document.getElementById('lbi'), lbc=document.getElementById('lbc'), idx=0;
-  function show(i){ idx=(i+shown.length)%shown.length; var o=shown[idx]; lbi.src=o.large||o.image; lbi.alt=o.name; lbc.textContent=o.name+' — '+(o.price||(o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'')||o.badge||''); }
+  function show(i){ idx=(i+shown.length)%shown.length; var o=shown[idx]; var sub=(o.desc && o.desc!==o.name)?o.desc:''; lbi.src=o.large||o.image; lbi.alt=o.name+(sub?' '+sub:''); lbc.textContent=o.name+(sub?' — '+sub:'')+' — '+(o.price||(o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'')||o.badge||''); }
   function open(i){ show(i); lb.classList.add('on'); document.body.style.overflow='hidden'; }
   function close(){ lb.classList.remove('on'); document.body.style.overflow=''; lbi.removeAttribute('src'); }
   grid.addEventListener('click',function(e){ var c=e.target.closest('.card'); if(c) open(+c.getAttribute('data-i')); });
