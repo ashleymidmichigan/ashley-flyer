@@ -22,7 +22,7 @@
   • Leave "desc" off when it would repeat "name". Do not add an unverified series.
   • Several sizes? Use "prices": [ {"label":"Queen","price":"$749"}, ... ] instead of "price".
   • No price? Leave "price" out and add "badge": "your text" instead.
-  • Optional "icon": a small picture shown with that card's offer. The Breeze Collection TV photo is Samsung Belgium's product picture (CC BY 2.0, https://commons.wikimedia.org/wiki/File:Samsung_UE65F9005STXXE_front_black_20130613.jpg). It is a representative screen only. Do not name that brand or model on the card.
+  • The Breeze Collection pictures include a television inset. The untouched family photo is img/18-family.jpg. The television is Samsung Belgium's product picture (CC BY 2.0, https://commons.wikimedia.org/wiki/File:Samsung_UE65F9005STXXE_front_black_20130613.jpg), a representative screen only. Do not name that brand or model on the card.
   • Sale dates: type them into "dates" (e.g. "Oct 1 – Oct 31"); leave "" to hide.
   • Leave a store "phone" as "" to hide its call link.
   Keep the commas and quotes exactly as they are.
@@ -207,7 +207,6 @@
     {
       "name": "Tempur-Pedic Breeze Collection",
       "badge": "FREE 50\" Smart TV with purchase",
-      "icon": "img/tv-offer.png",
       "category": "Mattresses",
       "image": "img/18.jpg",
       "large": "img/18-lg.jpg"
@@ -425,7 +424,6 @@
   a.card:focus-visible{outline:3px solid var(--gold);outline-offset:-5px}
   .card .ph{aspect-ratio:1/1;background:var(--sand);overflow:hidden}
   .card .ph img{display:block;width:100%;height:100%;object-fit:cover}
-  .card .tv{display:block;width:86%;max-width:168px;height:auto;margin:8px auto 0}
   .card .info{padding:10px 12px 14px}
   .card .nm{font-weight:700;font-size:14px;line-height:1.25;color:var(--ink)}
   .card .ds{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.3}
@@ -518,9 +516,8 @@
       var closeTag = o.link ? '<span class="sr">, opens Synchrony financing in a new tab</span></a>' : '</button>';
       var availability = o.terms==='Door Buster starts on Nov 25' ? '<div class="tm">'+esc(o.terms)+'</div>' : '';
       var tap = (!o.link && (o.price||o.prices)) ? '<div class="tap">Tap to enlarge</div>' : '';
-      var icon = o.icon ? '<img class="tv" src="'+esc(o.icon)+'" alt="">' : '';
       return openTag+'<div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
-             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+icon+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+availability+tap+'</div>'+closeTag;
+             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+availability+tap+'</div>'+closeTag;
     }).join('');
   }
   render();
