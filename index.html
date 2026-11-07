@@ -455,8 +455,8 @@
   var d = JSON.parse(document.getElementById('flyer-data').textContent);
   var esc = function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   var house = '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16 16 5l11 11"/><path d="M9 14v13h14V14"/></svg>';
-  var rest = (d.categories||[]).filter(function(c){return c!=='Mattresses'});
-  var cats = ['All','Mattresses'].concat(rest);
+  var rest = (d.categories||[]).filter(function(c){return c!=='Mattresses'&&c!=='Door Busters'});
+  var cats = ['All','Door Busters','Mattresses'].concat(rest);
   var cur = 'All';
 
   var h = '<header><div class="brand">'+house+esc(d.businessName)+'</div><h1>'+esc(d.title)+'</h1>' +
