@@ -220,9 +220,10 @@
     {
       "name": "Premium Mattress Financing",
       "badge": "$0 down, up to 60 months 0% interest on premium mattresses",
+      "link": "https://www.synchrony.com/mmc/II238036901?sitecode=acewel402",
       "category": "Mattresses",
-      "image": "img/19.jpg",
-      "large": "img/19-lg.jpg"
+      "image": "img/premium-financing.svg",
+      "large": "img/premium-financing.svg"
     },
     {
       "name": "Nectar Classic Hybrid Mattress",
@@ -395,6 +396,8 @@
   main{padding:16px 12px 8px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .card{background:#fff;border-radius:16px;border:1px solid #e4e4e7;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
+  a.card{text-decoration:none}
+  a.card:focus-visible{outline:3px solid var(--gold);outline-offset:-5px}
   .card .ph{aspect-ratio:1/1;background:var(--sand);overflow:hidden}
   .card img{display:block;width:100%;height:100%;object-fit:cover}
   .card .info{padding:10px 12px 14px}
@@ -483,8 +486,12 @@
       var money = o.price || (o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'') || o.badge || '';
       var sub = (o.desc && o.desc !== o.name) ? o.desc : '';
       var alt = [o.name, sub, money, o.terms].filter(Boolean).join('. ');
-      return '<button class="card'+(o.category==='Door Busters'?' door':'')+'" data-i="'+i+'"><div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
-             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+(o.terms?'<div class="tm">'+esc(o.terms)+'</div>':'')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div></button>';
+      var openTag = o.link
+        ? '<a class="card" href="'+esc(o.link)+'" target="_blank" rel="noopener noreferrer">'
+        : '<button class="card'+(o.category==='Door Busters'?' door':'')+'" data-i="'+i+'">';
+      var closeTag = o.link ? '<span class="sr">, opens Synchrony financing in a new tab</span></a>' : '</button>';
+      return openTag+'<div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
+             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+(o.terms?'<div class="tm">'+esc(o.terms)+'</div>':'')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div>'+closeTag;
     }).join('');
   }
   render();
@@ -501,7 +508,7 @@
   function show(i){ idx=(i+shown.length)%shown.length; var o=shown[idx]; var sub=(o.desc && o.desc!==o.name)?o.desc:''; lbi.src=o.large||o.image; lbi.alt=o.name+(sub?' '+sub:''); lbc.textContent=o.name+(sub?' — '+sub:'')+' — '+(o.price||(o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'')||o.badge||''); }
   function open(i){ show(i); lb.classList.add('on'); document.body.style.overflow='hidden'; }
   function close(){ lb.classList.remove('on'); document.body.style.overflow=''; lbi.removeAttribute('src'); }
-  grid.addEventListener('click',function(e){ var c=e.target.closest('.card'); if(c) open(+c.getAttribute('data-i')); });
+  grid.addEventListener('click',function(e){ var c=e.target.closest('.card'); if(!c || c.tagName==='A') return; open(+c.getAttribute('data-i')); });
   document.getElementById('lbx').onclick=close;
   document.getElementById('lbp').onclick=function(){show(idx-1)};
   document.getElementById('lbn').onclick=function(){show(idx+1)};
