@@ -18,7 +18,7 @@
     "image" = picture on the card, "large" = bigger version when tapped
     (leave "large" out to reuse "image").
   • "category" must match one of the names in "categories".
-  • Optional "terms": a short note under a card. Door Busters say "Door Buster starts on Nov 25". Do not add a per-card financing disclaimer; the top banner and footer already say that.
+  • The only note shown under a card is "terms": "Door Buster starts on Nov 25". Do not add other per-card disclaimer lines; the top banner and footer already cover financing. Priced cards say "Tap to enlarge".
   • Leave "desc" off when it would repeat "name". Do not add an unverified series.
   • Several sizes? Use "prices": [ {"label":"Queen","price":"$749"}, ... ] instead of "price".
   • No price? Leave "price" out and add "badge": "your text" instead.
@@ -256,7 +256,6 @@
     {
       "name": "Tempur-Pedic",
       "badge": "Save up to $1000* on select Tempur-Pedic split king sleep systems",
-      "terms": "Select mattress sets only. Lesser savings may apply. See store or tempurpedic.com for details.",
       "category": "Mattresses",
       "image": "img/tempur-split-king.jpg",
       "large": "img/tempur-split-king-lg.jpg"
@@ -265,7 +264,6 @@
       "name": "Stearns & Foster",
       "desc": "The gift of luxurious sleep",
       "badge": "Unwrap savings of up to $1,000*",
-      "terms": "TEMPUR-Ergo ProSmart Base powered by Sleeptracker-AI. Select mattress sets only. Lesser savings may apply.",
       "category": "Mattresses",
       "image": "img/stearns-foster.jpg",
       "large": "img/stearns-foster-lg.jpg"
@@ -281,7 +279,6 @@
       "name": "Sealy Posturepedic",
       "desc": "Going on now during our Black Friday Event",
       "badge": "Up to $400 off*",
-      "terms": "Select mattress sets only. Lesser savings may apply.",
       "category": "Mattresses",
       "image": "img/sealy-posturepedic.jpg",
       "large": "img/sealy-posturepedic-lg.jpg"
@@ -518,13 +515,15 @@
     grid.innerHTML = shown.map(function(o,i){
       var money = o.price || (o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'') || o.badge || '';
       var sub = (o.desc && o.desc !== o.name) ? o.desc : '';
-      var alt = [o.name, sub, money, o.terms].filter(Boolean).join('. ');
+      var alt = [o.name, sub, money, o.terms==='Door Buster starts on Nov 25'?o.terms:''].filter(Boolean).join('. ');
       var openTag = o.link
         ? '<a class="card" href="'+esc(o.link)+'" target="_blank" rel="noopener noreferrer">'
         : '<button class="card'+(o.category==='Door Busters'?' door':'')+'" data-i="'+i+'">';
       var closeTag = o.link ? '<span class="sr">, opens Synchrony financing in a new tab</span></a>' : '</button>';
+      var availability = o.terms==='Door Buster starts on Nov 25' ? '<div class="tm">'+esc(o.terms)+'</div>' : '';
+      var tap = (!o.link && (o.price||o.prices)) ? '<div class="tap">Tap to enlarge</div>' : '';
       return openTag+'<div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
-             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+(o.terms?'<div class="tm">'+esc(o.terms)+'</div>':'')+'<div class="tap">'+(o.price||o.prices?'Tap to enlarge':'See store for details*')+'</div></div>'+closeTag;
+             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+availability+tap+'</div>'+closeTag;
     }).join('');
   }
   render();
