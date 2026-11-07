@@ -478,6 +478,7 @@
   var shown = [];
   function render(){
     shown = d.offers.filter(function(o){return cur==='All'||o.category===cur});
+    if(cur==='All') shown = shown.filter(function(o){return o.category==='Mattresses'}).concat(shown.filter(function(o){return o.category!=='Mattresses'}));
     grid.innerHTML = shown.map(function(o,i){
       var money = o.price || (o.prices?o.prices.map(function(p){return p.label+' '+p.price}).join(' / '):'') || o.badge || '';
       var sub = (o.desc && o.desc !== o.name) ? o.desc : '';
