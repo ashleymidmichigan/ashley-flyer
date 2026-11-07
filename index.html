@@ -22,7 +22,7 @@
   • Leave "desc" off when it would repeat "name". Do not add an unverified series.
   • Several sizes? Use "prices": [ {"label":"Queen","price":"$749"}, ... ] instead of "price".
   • No price? Leave "price" out and add "badge": "your text" instead.
-  • The Breeze Collection pictures include a television inset. The untouched family photo is img/18-family.jpg. The television is Samsung Belgium's product picture (CC BY 2.0, https://commons.wikimedia.org/wiki/File:Samsung_UE65F9005STXXE_front_black_20130613.jpg), a representative screen only. Do not name that brand or model on the card.
+  • The Breeze Collection artwork is one piece: the family photo, a dark-and-gold offer panel, and the television. "offerInArt": true keeps that claim out of a second badge. The untouched family photo is img/18-family.jpg. The television is Samsung Belgium's product picture (CC BY 2.0, https://commons.wikimedia.org/wiki/File:Samsung_UE65F9005STXXE_front_black_20130613.jpg), a representative screen only. Do not name that brand or model on the card.
   • Sale dates: type them into "dates" (e.g. "Oct 1 – Oct 31"); leave "" to hide.
   • Leave a store "phone" as "" to hide its call link.
   Keep the commas and quotes exactly as they are.
@@ -207,6 +207,7 @@
     {
       "name": "Tempur-Pedic Breeze Collection",
       "badge": "FREE 50\" Smart TV with purchase",
+      "offerInArt": true,
       "category": "Mattresses",
       "image": "img/18.jpg",
       "large": "img/18-lg.jpg"
@@ -517,7 +518,7 @@
       var availability = o.terms==='Door Buster starts on Nov 25' ? '<div class="tm">'+esc(o.terms)+'</div>' : '';
       var tap = (!o.link && (o.price||o.prices)) ? '<div class="tap">Tap to enlarge</div>' : '';
       return openTag+'<div class="ph"><img src="'+esc(o.image)+'" alt="'+esc(alt)+'" '+(i<4?'':'loading="lazy"')+' decoding="async"></div>' +
-             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':'<div class="bd">'+esc(o.badge||'')+'</div>')+availability+tap+'</div>'+closeTag;
+             '<div class="info"><div class="nm">'+esc(o.name)+'</div>'+(sub?'<div class="ds">'+esc(sub)+'</div>':'')+(o.prices?'<div class="pp">'+o.prices.map(function(p){return '<div><span>'+esc(p.label)+'</span><b>'+esc(p.price)+'</b></div>'}).join('')+'</div>':o.price?'<div class="pr">'+esc(o.price)+'<small>SALE</small></div>':(o.badge && !o.offerInArt?'<div class="bd">'+esc(o.badge)+'</div>':''))+availability+tap+'</div>'+closeTag;
     }).join('');
   }
   render();
