@@ -455,15 +455,16 @@
   var d = JSON.parse(document.getElementById('flyer-data').textContent);
   var esc = function(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
   var house = '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16 16 5l11 11"/><path d="M9 14v13h14V14"/></svg>';
-  var cats = ['All'].concat(d.categories||[]);
-  var cur = 'All';
+  var rest = (d.categories||[]).filter(function(c){return c!=='Mattresses'});
+  var cats = ['Mattresses','All'].concat(rest);
+  var cur = 'Mattresses';
 
   var h = '<header><div class="brand">'+house+esc(d.businessName)+'</div><h1>'+esc(d.title)+'</h1>' +
     (d.tagline?'<p class="tag">'+esc(d.tagline)+'</p>':'') +
     (d.dates?'<div class="dates">'+esc(d.dates)+'</div>':'') + '</header>';
   h += '<div class="fin"><span class="fin-copy">'+esc(d.financing)+'</span><a class="apply" href="https://www.synchrony.com/mmc/II238036901?sitecode=acewel402" target="_blank" rel="noopener noreferrer">Apply Now<span class="sr">, opens Synchrony financing in a new tab</span></a></div>';
   h += '<nav><div class="tabs" id="tabs">' + cats.map(function(c){
-        return '<button class="tab'+(c==='Door Busters'?' tab-door':'')+'" data-c="'+esc(c)+'" aria-pressed="'+(c==='All')+'">'+esc(c)+'</button>';}).join('') + '</div></nav>';
+        return '<button class="tab'+(c==='Door Busters'?' tab-door':'')+'" data-c="'+esc(c)+'" aria-pressed="'+(c===cur)+'">'+esc(c)+'</button>';}).join('') + '</div></nav>';
   h += '<div class="wrap"><main><div class="grid" id="grid"></div><p class="note">'+esc(d.footnote)+'</p></main></div>';
   h += '<footer><div class="wrap"><div class="ft">'+esc(d.storesHeading)+'</div><div class="strip">' + d.stores.map(function(s){
         var a = s.street+', '+s.city+', '+s.state+(s.zip?' '+s.zip:'');
